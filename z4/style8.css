@@ -74,10 +74,9 @@ form button:active{
     right: 0;
 }
 .messageError{
-    position: absolute;
     top: 30%;
-    font-size: 24px;
-    color: red;
+    font-size: 16px;
+    color: #7e00ff;
     text-align: center;
     left: 0;
     right: 0;
