@@ -1,13 +1,16 @@
 <?php
-
   require('connection.php');
 
-  $haveAdmin = 0;
-  if(isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW'])){
-    $qu = $db->prepare("SELECT id FROM users WHERE role = 'admin' and login = ? and password = ?");
-    $qu->execute([$_SERVER['PHP_AUTH_USER'], md5($_SERVER['PHP_AUTH_PW'])]);
-    $haveAdmin = $qu->rowCount();
-  }
+  /**
+   * Задача 6. Реализовать вход администратора с использованием
+   * HTTP-авторизации для просмотра и удаления результатов.
+   **/
+
+  // Пример HTTP-аутентификации.
+  // PHP хранит логин и пароль в суперглобальном массиве $_SERVER.
+  // Подробнее см. стр. 26 и 99 в учебном пособии Веб-программирование и веб-сервисы.
+
+  $haveAdmin = checkAdmin($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);
 
   if (!$haveAdmin) {
     header('HTTP/1.1 401 Unanthorized');
@@ -16,6 +19,11 @@
     
     exit();
   }
+
+  // *********
+  // Здесь нужно прочитать отправленные ранее пользователями данные и вывести в таблицу.
+  // Реализовать просмотр и удаление всех данных.
+  // *********
 ?>
 
 <!DOCTYPE html>
@@ -24,9 +32,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="libs/bootstrap-4.0.0-dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="./style2.css">
+    <link rel="stylesheet" href="./styleAdmin.css">
+     <link rel="stylesheet" href="./style2.css">
     <script src="./libs/js/jquery-3.4.1.min.js"></script>
-    <title>Задание 6 (админка)</title>
+    <title>Задание 7 (админка)</title>
 </head>
 <body class="admin">
 
@@ -34,6 +43,14 @@
     <div><a href="#data">Информация</a></div>
     <div><a href="#analize">Статистика</a></div>
 </header>
+
+  <div>
+    <?php
+        $csrf_token = bin2hex(random_bytes(32));
+        $_SESSION['csrf_token_admin'] = $csrf_token;
+    ?>
+    <input type="hidden" name='csrf_token' id='csrf_token' value='<?php echo $csrf_token; ?>'>
+  </div>
 
   <table id="data">
     <thead>
@@ -80,6 +97,7 @@
 
 
     </tbody>
+
   </table>
 
   <table class="analize" id="analize">
