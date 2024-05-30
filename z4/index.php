@@ -137,14 +137,14 @@
     }
     else {
       // Удаляем Cookies с признаками ошибок.
-      del_cook('fio');
-      del_cook('phone');
-      del_cook('email');
-      del_cook('birthday');
-      del_cook('gender');
-      del_cook('like_lang');
-      del_cook('biography');
-      del_cook('oznakomlen');
+      del_cook('fio', '', time() - 30 * 24 * 60 * 60);
+      del_cook('phone', '', time() - 30 * 24 * 60 * 60);
+      del_cook('email', '', time() - 30 * 24 * 60 * 60);
+      del_cook('birthday', '', time() - 30 * 24 * 60 * 60);
+      del_cook('gender', '', time() - 30 * 24 * 60 * 60);
+      del_cook('like_lang', '', time() - 30 * 24 * 60 * 60);
+      del_cook('biography', '', time() - 30 * 24 * 60 * 60);
+      del_cook('oznakomlen', '', time() - 30 * 24 * 60 * 60);
     }
     
     try {
